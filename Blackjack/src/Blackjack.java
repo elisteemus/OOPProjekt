@@ -86,6 +86,7 @@ public class Blackjack {
     public static void segaKaardid(List<Kaart> pakk) {
         Collections.shuffle(pakk);
     }
+    //test
 
 
 }
