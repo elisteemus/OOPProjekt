@@ -22,15 +22,10 @@ public class Blackjack {
             }
         }
 
-        List<Kaart> pakk = new ArrayList<>();
-        Arrays.stream(algnePakk).spliterator().forEachRemaining(pakk::add);
-        segaKaardid(pakk);
 
         //kontrollisin sellega kas teeb õiged kaardid:
         //Arrays.stream(algnePakk).iterator().forEachRemaining(System.out::println);
 
-        Mängija mängija = new Mängija();
-        Diiler diiler = new Diiler();
 
         double raha = 200;
 
@@ -38,10 +33,18 @@ public class Blackjack {
         System.out.println("Teretulemast mängu Blackjack! ");
 
         while (raha >= 0) {
+            Mängija mängija = new Mängija();
+            Diiler diiler = new Diiler();
+            
             System.out.print("Sul on " + raha + "€. Jätkamiseks sisesta panus: ");
             double panus = input.nextDouble();
             raha -= panus;
             System.out.println("Sinu panus on " + panus + ". Alustame roundiga.");
+            
+            List<Kaart> pakk = new ArrayList<>();
+            Arrays.stream(algnePakk).spliterator().forEachRemaining(pakk::add);
+            segaKaardid(pakk);
+            
             for (int i = 0; i < 2; i++) {
                 Kaart mängija_kaart = pakk.get((int) (Math.random() * pakk.size()));
                 mängija.lisaKaart(mängija_kaart);
