@@ -3,90 +3,92 @@ import java.util.*;
 public class Blackjack {
 
     public static void main(String[] args) {
+
         String[] mastid = {"♦", "♣", "♥", "♠"};
-        String[] väärtused = {"2", "3", "4", "5", "6", "7",
-                "8", "9", "10", "J", "Q", "K", "A"};
+        String[] väärtused = {"A", "2", "3", "4", "5", "6", "7",
+                "8", "9", "10", "J", "Q", "K"};
 
         Kaart[] algnePakk = new Kaart[52];
         int lugeja = 0;
-        for (String mast: mastid){
+        for (String mast : mastid) {
             for (int i = 0; i < väärtused.length; i++) {
                 String kirjeldus = väärtused[i];
                 if (i < 9)
-                    algnePakk[lugeja] = new Kaart(i+2, kirjeldus, mast);
-                else if (i == väärtused.length-1){
-                    algnePakk[lugeja] = new Kaart(1, kirjeldus, mast);
-                } else {
-                    algnePakk[lugeja] = new Kaart(10, kirjeldus,mast);
-                }
-                lugeja++;
-            }
-        }
-        List<Kaart> pakk = new ArrayList<>();
-        Arrays.stream(algnePakk).spliterator().forEachRemaining(pakk::add);
-        /*
-        for (int i = 0; i < mastid.length; i++) {
-            for (int j = 0; j < väärtused.length; j++) {
-                String kirjeldus = mastid[i] + " " + väärtused[j];
-                if (j < 9)
-                    algnePakk[lugeja] = new Kaart(j+2, kirjeldus);
-                else if (j == väärtused.length-1){
-                    algnePakk[lugeja] = new Kaart(11, kirjeldus);
-                } else {
-                    algnePakk[lugeja] = new Kaart(10, kirjeldus);
+                    algnePakk[lugeja] = new Kaart(i + 1, kirjeldus, mast);
+                else {
+                    algnePakk[lugeja] = new Kaart(10, kirjeldus, mast);
                 }
                 lugeja++;
             }
         }
 
-         */
+        List<Kaart> pakk = new ArrayList<>();
+        Arrays.stream(algnePakk).spliterator().forEachRemaining(pakk::add);
+        segaKaardid(pakk);
 
         //kontrollisin sellega kas teeb õiged kaardid:
         //Arrays.stream(algnePakk).iterator().forEachRemaining(System.out::println);
 
-        //for (Kaart k: pakk) System.out.println(k);
-
         Mängija mängija = new Mängija();
         Diiler diiler = new Diiler();
-        /*
+
+        double raha = 200;
+
         Scanner input = new Scanner(System.in);
-        System.out.print("Teretulemast mängu Blackjack! Alustamiseks sisesta panus: ");
-        int panus = input.nextInt();
-        System.out.println("Sinu panus on " + panus);
+        System.out.println("Teretulemast mängu Blackjack! ");
 
-         */
-        String jätkamine = "jah";
-        while (jätkamine.equals("jah")){
-            System.out.println("Alustame uue mänguga");
-            segaKaardid(pakk);
-            System.out.println(pakk);
+        while (raha >= 0) {
+            System.out.print("Sul on " + raha + "€. Jätkamiseks sisesta panus: ");
+            double panus = input.nextDouble();
+            raha -= panus;
+            System.out.println("Sinu panus on " + panus + ". Alustame roundiga.");
             for (int i = 0; i < 2; i++) {
-                Kaart mängija_kaart=pakk.get((int) (Math.random() * pakk.size()));
+                Kaart mängija_kaart = pakk.get((int) (Math.random() * pakk.size()));
                 mängija.lisaKaart(mängija_kaart);
-                System.out.println(mängija_kaart);
-                pakk.remove(mängija_kaart);                            //siin viskab erindi
+                pakk.remove(mängija_kaart);
 
-                Kaart diileri_kaart=pakk.get((int) (Math.random() * pakk.size()));
-                diiler.lisaKaart(pakk.get((int) (Math.random() * pakk.size())));
-                if (i > 0) System.out.println(diileri_kaart);
+                Kaart diileri_kaart = pakk.get((int) (Math.random() * pakk.size()));
+                diiler.lisaKaart(diileri_kaart);
                 pakk.remove(diileri_kaart);
             }
-            System.out.println("Sinu kaardid: "+ mängija.getKaardid());
-            System.out.println("Diileri kaardid: "+ diiler.getKaardid());
-            System.out.println(pakk);
+            if (mängija.kas21()) {
+                System.out.println("Sinu kaardid: " + mängija.getKaardid());
+                System.out.println("21! Võidad 1.5 korda oma panuse.");
+                raha += panus * 1.5;
+                mängija.setKaardid(new ArrayList<>());
+                mängija.setÄssasid(0);
+                break;
+            }
+            while (true) {
+                System.out.println("Sinu kaardid: " + mängija.getKaardid());
+                System.out.println("Diileri kaardid: " + diiler.getKaardid().get(0) +  ", (peidetud)");
+
+                if (mängija.kasÜle()) {
+                    System.out.println("Bust. Kaotad oma panuse.");
+                    mängija.setKaardid(new ArrayList<>());
+                    mängija.setÄssasid(0);
+                    break;
+                }
+
+                System.out.print("Sinu valikud: '1' (hit), '0' (stand): ");
+                int valik = input.nextInt();
+
+                if (valik == 1) {
+                    Kaart mängija_kaart = pakk.get((int) (Math.random() * pakk.size()));
+                    mängija.lisaKaart(mängija_kaart);
+                    pakk.remove(mängija_kaart);
+                }
+
+                if (valik == 0) break;
+            }
+
+            //siia siis teha diileri kaardi revealimine ja kõik muud jutud
+
         }
-
-
-
-
-
     }
-
 
     public static void segaKaardid(List<Kaart> pakk) {
         Collections.shuffle(pakk);
     }
-    //test
-
 
 }

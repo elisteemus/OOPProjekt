@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Mängija{
+public class Mängija {
 
     private List<Kaart> kaardid;
     private int ässasid;
@@ -12,9 +12,9 @@ public class Mängija{
 
     public int kaartideSumma() {
         int summa = 0;
-        for (Kaart k: kaardid) {
-            if(summa<=10 && ässasid==0&& k.getKirjeldus().equals("A")){
-                summa+=11;
+        for (Kaart k : kaardid) {
+            if (summa <= 10 && ässasid == 0 && k.getKirjeldus().equals("A")) {
+                summa += 11;
                 this.ässasid++;
             } else summa += k.getVäärtus();
         }
@@ -25,22 +25,25 @@ public class Mängija{
         return kaartideSumma() > 21;
     }
 
-    public boolean kas21() {return  kaartideSumma()==21;}
+    public boolean kas21() {
+        return kaartideSumma() == 21;
+    }
 
     public List<Kaart> getKaardid() {
         return kaardid;
     }
 
+    public void setKaardid(List<Kaart> kaardid) {
+        this.kaardid = kaardid;
+    }
+
+    public void setÄssasid(int ässasid) {
+        this.ässasid = ässasid;
+    }
+
     public void lisaKaart(Kaart kaart) {
         kaardid.add(kaart);
         if (kaart.getKirjeldus().equals("A")) this.ässasid++;
-        /*
-        if (this.kasÜle()){
-            //siin tuleks ässa väärtus teha 11 asemel üheks? vb
-            //sp loemegi ässade arvu pakis et nende väärtust saaks vajadusel muuta
-        }
-         */
     }
-
 
 }
