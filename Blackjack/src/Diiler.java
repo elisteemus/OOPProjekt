@@ -13,7 +13,7 @@ public class Diiler {
         int summa = 0;
         boolean juurde11 = false;
         for (Kaart k: kaardid) {
-            if(summa<=10 && ässasid==0&& k.getKirjeldus().equals("A")){
+            if(summa<=10 && ässasid==1&& k.getKirjeldus().equals("A")){
                 summa+=11;
                 juurde11 = true;
             } else summa += k.getVäärtus();
