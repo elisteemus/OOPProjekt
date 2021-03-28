@@ -11,12 +11,14 @@ public class Diiler {
 
     public int kaartideSumma() {
         int summa = 0;
+        boolean juurde11 = false;
         for (Kaart k: kaardid) {
             if(summa<=10 && ässasid==0&& k.getKirjeldus().equals("A")){
                 summa+=11;
-                this.ässasid++;
+                juurde11 = true;
             } else summa += k.getVäärtus();
         }
+        if (juurde11 && summa>21) summa -=10;
         return summa;
     }
 
