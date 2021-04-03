@@ -94,6 +94,7 @@ public class Blackjack {
                         Kaart mängijaKaart = pakk.get((int) (Math.random() * pakk.size()));
                         mängija.lisaKaart(mängijaKaart);
                         pakk.remove(mängijaKaart);
+                        algus = false;
                     }
 
                     if (valik == 0) break;
@@ -111,8 +112,6 @@ public class Blackjack {
                         }
                         break;
                     }
-
-                    algus = false;
                 }
                 if (!mängija.kasÜle()) {
                     if (!dd) {
