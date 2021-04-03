@@ -86,7 +86,7 @@ public class Blackjack {
 
                     if (mängija.kas21()) break;
 
-                    if (algus) System.out.println("Sinu valikud: '2' (double down), '1' (hit), '0' (stand): ");
+                    if (algus && panus <= raha) System.out.println("Sinu valikud: '2' (double down), '1' (hit), '0' (stand): ");
                     else System.out.print("Sinu valikud: '1' (hit), '0' (stand): ");
                     int valik = input.nextInt();
 
@@ -97,7 +97,7 @@ public class Blackjack {
                     }
 
                     if (valik == 0) break;
-                    if (valik == 2 && algus) {
+                    if (valik == 2 && algus && panus <= raha) {
                         dd = true;
                         Kaart mängijaKaart = pakk.get((int) (Math.random() * pakk.size()));
                         mängija.lisaKaart(mängijaKaart);
