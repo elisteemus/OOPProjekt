@@ -2,23 +2,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Diiler {
-    private List<Kaart> kaardid;
-    private int ässasid;
+    private List<Kaart> kaardid;                        //kaardid diileri käes
 
     public Diiler() {
         kaardid = new ArrayList<>();
     }
 
     public int kaartideSumma() {
+        boolean juurde11 = false;                                 //true korral on ässaga 11 juurde lisatud
         int summa = 0;
-        boolean juurde11 = false;
         for (Kaart k : kaardid) {
-            if (summa <= 10 && ässasid >= 1 && k.getKirjeldus().equals("A")) {
+            if (summa <= 10 && k.getKirjeldus().equals("A")) {    //ässa puhul liidetakse võimaluse korral 11 juurde
                 summa += 11;
                 juurde11 = true;
-            } else summa += k.getVäärtus();
+            } else {
+                summa += k.getVäärtus();
+            }
         }
-        if (juurde11 && summa > 21) summa -= 10;
+        if (juurde11 && summa > 21)
+            summa -= 10;     //olukord, kus enne oli ässa tõttu 11 juurde liidetud, aga summa ületab 21
         return summa;
     }
 
@@ -40,6 +42,5 @@ public class Diiler {
 
     public void lisaKaart(Kaart kaart) {
         kaardid.add(kaart);
-        if (kaart.getKirjeldus().equals("A")) this.ässasid++;
     }
 }
