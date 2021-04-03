@@ -70,6 +70,8 @@ public class Blackjack {
                     raha += 3 * panus;
                 }
             } else {
+                boolean algus = true;
+                boolean dd = false;
                 while (true) {
                     System.out.println("Sinu kaardid: " + mängija.getKaardid());
                     System.out.println("Sinu kaartide summa: " + mängija.kaartideSumma());
@@ -84,7 +86,8 @@ public class Blackjack {
 
                     if (mängija.kas21()) break;
 
-                    System.out.print("Sinu valikud: '1' (hit), '0' (stand): ");
+                    if (algus) System.out.println("Sinu valikud: '2' (double down), '1' (hit), '0' (stand): ");
+                    else System.out.print("Sinu valikud: '1' (hit), '0' (stand): ");
                     int valik = input.nextInt();
 
                     if (valik == 1) {
@@ -94,10 +97,28 @@ public class Blackjack {
                     }
 
                     if (valik == 0) break;
+                    if (valik == 2 && algus) {
+                        dd = true;
+                        Kaart mängijaKaart = pakk.get((int) (Math.random() * pakk.size()));
+                        mängija.lisaKaart(mängijaKaart);
+                        pakk.remove(mängijaKaart);
+                        panus *= 2;
+                        System.out.println("Sinu kaardid: " + mängija.getKaardid());
+                        System.out.println("Diileri kaardid: " + diiler.getKaardid());
+                        if (mängija.kasÜle()) {
+                            System.out.println("Bust! Kaotad " + panus + "€.");
+                            System.out.println("=================================================================================");
+                        }
+                        break;
+                    }
+
+                    algus = false;
                 }
                 if (!mängija.kasÜle()) {
-                    System.out.println("Sinu kaardid: " + mängija.getKaardid());
-                    System.out.println("Diileri kaardid: " + diiler.getKaardid());
+                    if (!dd) {
+                        System.out.println("Sinu kaardid: " + mängija.getKaardid());
+                        System.out.println("Diileri kaardid: " + diiler.getKaardid());
+                    }
 
                     while (diiler.kasAlla17()) {
                         Kaart diileriKaart = pakk.get((int) (Math.random() * pakk.size()));
