@@ -13,7 +13,7 @@ public class Mängija {
         boolean juurde11 = false;
         int summa = 0;
         for (Kaart k : kaardid) {
-            if (summa <= 10 && ässasid == 1 && k.getKirjeldus().equals("A")) {
+            if (summa <= 10 && ässasid >= 1 && k.getKirjeldus().equals("A")) {
                 summa += 11;
                 juurde11 = true;
             } else summa += k.getVäärtus();
