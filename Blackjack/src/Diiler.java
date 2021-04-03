@@ -6,29 +6,33 @@ public class Diiler {
     private int ässasid;
 
     public Diiler() {
-        kaardid=new ArrayList<>();
+        kaardid = new ArrayList<>();
     }
 
     public int kaartideSumma() {
         int summa = 0;
         boolean juurde11 = false;
-        for (Kaart k: kaardid) {
-            if(summa<=10 && ässasid==1&& k.getKirjeldus().equals("A")){
-                summa+=11;
+        for (Kaart k : kaardid) {
+            if (summa <= 10 && ässasid == 1 && k.getKirjeldus().equals("A")) {
+                summa += 11;
                 juurde11 = true;
             } else summa += k.getVäärtus();
         }
-        if (juurde11 && summa>21) summa -=10;
+        if (juurde11 && summa > 21) summa -= 10;
         return summa;
     }
 
-    public boolean kasAlla17() {return kaartideSumma()<17;}
+    public boolean kasAlla17() {
+        return kaartideSumma() < 17;
+    }
 
     public boolean kasÜle() {
         return kaartideSumma() > 21;
     }
 
-    public boolean kas21() {return  kaartideSumma()==21;}
+    public boolean kas21() {
+        return kaartideSumma() == 21;
+    }
 
     public List<Kaart> getKaardid() {
         return kaardid;

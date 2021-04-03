@@ -22,37 +22,37 @@ public class Blackjack {
             }
         }
 
-        //kontrollisin sellega kas teeb õiged kaardid:
-        //Arrays.stream(algnePakk).iterator().forEachRemaining(System.out::println);
-
         double raha = 200;
-
         Scanner input = new Scanner(System.in);
         System.out.println("Teretulemast mängu Blackjack! ");
 
-        while (raha >= 0) {
+        while (raha > 0) {
             Mängija mängija = new Mängija();
             Diiler diiler = new Diiler();
 
             System.out.print("Sul on " + raha + "€. Jätkamiseks sisesta panus: ");
             double panus = input.nextDouble();
+            while (panus > raha) {
+                System.out.println("Sul pole nii palju raha. Palun sisesta väiksem panus!");
+                System.out.print("Sul on " + raha + "€. Jätkamiseks sisesta panus: ");
+                panus = input.nextDouble();
+            }
             raha -= panus;
             System.out.println("Sinu panus on " + panus + ". Alustame roundiga.");
             System.out.println("=================================================================================");
 
             List<Kaart> pakk = new ArrayList<>();
             Arrays.stream(algnePakk).spliterator().forEachRemaining(pakk::add);
-            segaKaardid(pakk);
+            Collections.shuffle(pakk);
 
             for (int i = 0; i < 2; i++) {
-                Kaart mängija_kaart = pakk.get((int) (Math.random() * pakk.size()));
-                mängija.lisaKaart(mängija_kaart);
-                pakk.remove(mängija_kaart);
+                Kaart mängijaKaart = pakk.get((int) (Math.random() * pakk.size()));
+                mängija.lisaKaart(mängijaKaart);
+                pakk.remove(mängijaKaart);
 
-
-                Kaart diileri_kaart = pakk.get((int) (Math.random() * pakk.size()));
-                diiler.lisaKaart(diileri_kaart);
-                pakk.remove(diileri_kaart);
+                Kaart diileriKaart = pakk.get((int) (Math.random() * pakk.size()));
+                diiler.lisaKaart(diileriKaart);
+                pakk.remove(diileriKaart);
             }
 
             if (mängija.kas21()) {
@@ -65,20 +65,19 @@ public class Blackjack {
                 } else {
                     System.out.println("Sinu kaardid: " + mängija.getKaardid());
                     System.out.println("Diileri kaardid: " + diiler.getKaardid());
-                    System.out.println("Blackjack! Võidad: " + panus * 3 + "€");
+                    System.out.println("Blackjack! Võidad " + panus * 3 + "€.");
                     System.out.println("=================================================================================");
-                    raha += 3* panus;
+                    raha += 3 * panus;
                 }
             } else {
                 while (true) {
                     System.out.println("Sinu kaardid: " + mängija.getKaardid());
-                    System.out.println("Sinu summa:" + mängija.kaartideSumma());
+                    System.out.println("Sinu kaartide summa: " + mängija.kaartideSumma());
                     System.out.println("Diileri kaardid: " + diiler.getKaardid().get(0) + ", (peidetud)");
-                    System.out.println("=================================================================================");
-
+                    System.out.println("---------------------------------------------------------------------------------");
 
                     if (mängija.kasÜle()) {
-                        System.out.println("Bust! Kaotad: "+ panus+ "€");
+                        System.out.println("Bust! Kaotad " + panus + "€.");
                         System.out.println("=================================================================================");
                         break;
                     }
@@ -89,9 +88,9 @@ public class Blackjack {
                     int valik = input.nextInt();
 
                     if (valik == 1) {
-                        Kaart mängija_kaart = pakk.get((int) (Math.random() * pakk.size()));
-                        mängija.lisaKaart(mängija_kaart);
-                        pakk.remove(mängija_kaart);
+                        Kaart mängijaKaart = pakk.get((int) (Math.random() * pakk.size()));
+                        mängija.lisaKaart(mängijaKaart);
+                        pakk.remove(mängijaKaart);
                     }
 
                     if (valik == 0) break;
@@ -99,20 +98,22 @@ public class Blackjack {
                 if (!mängija.kasÜle()) {
                     System.out.println("Sinu kaardid: " + mängija.getKaardid());
                     System.out.println("Diileri kaardid: " + diiler.getKaardid());
+
                     while (diiler.kasAlla17()) {
-                        Kaart diileri_kaart = pakk.get((int) (Math.random() * pakk.size()));
-                        diiler.lisaKaart(diileri_kaart);
-                        pakk.remove(diileri_kaart);
-                        System.out.println("Sinu kaardid: " + mängija.getKaardid());
+                        Kaart diileriKaart = pakk.get((int) (Math.random() * pakk.size()));
+                        diiler.lisaKaart(diileriKaart);
+                        pakk.remove(diileriKaart);
+                        System.out.println("Diiler võtab kaardi...");
                         System.out.println("Diileri kaardid: " + diiler.getKaardid());
-                        System.out.println("=================================================================================");
+                        System.out.println("---------------------------------------------------------------------------------");
                     }
+
                     if (diiler.kasÜle() || diiler.kaartideSumma() < mängija.kaartideSumma()) {
-                        System.out.println("Sinu võit! Võidad: " + panus * 2 + "€");
+                        System.out.println("Sinu võit! Võidad " + panus * 2 + "€.");
                         System.out.println("=================================================================================");
                         raha += panus * 2;
                     } else if (diiler.kaartideSumma() > mängija.kaartideSumma()) {
-                        System.out.println("Diileri võit! Kaotad: " + panus + "€");
+                        System.out.println("Diileri võit! Kaotad " + panus + "€.");
                         System.out.println("=================================================================================");
                     } else if (diiler.kaartideSumma() == mängija.kaartideSumma()) {
                         System.out.println("Push! Mõlemal võrdne kaartide summa. Saad " + panus + "€ tagasi.");
@@ -122,11 +123,7 @@ public class Blackjack {
                 }
             }
         }
+        System.out.println("Sul on " + raha + "€.");
+        System.out.println("Mäng läbi! Kaotasid kogu oma raha.");
     }
-
-
-    public static void segaKaardid(List<Kaart> pakk) {
-        Collections.shuffle(pakk);
-    }
-
 }

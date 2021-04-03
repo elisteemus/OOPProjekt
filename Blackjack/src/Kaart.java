@@ -1,4 +1,3 @@
-
 public class Kaart {
 
     private int väärtus;
@@ -19,17 +18,8 @@ public class Kaart {
         return väärtus;
     }
 
-    public String getMast(){
-        return mast;
-    }
-
-    public void setVäärtus(int väärtus) {
-        this.väärtus = väärtus;
-    }
-
     @Override
     public String toString() {
         return mast + kirjeldus;
     }
-
 }
