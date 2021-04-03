@@ -1,8 +1,8 @@
 public class Kaart {
 
-    private int väärtus;
-    private final String kirjeldus;
-    private final String mast;
+    private int väärtus;                //kaardi punktide arv
+    private final String kirjeldus;     //kaardi tüüp
+    private final String mast;          //kaardi mast
 
     public Kaart(int väärtus, String kirjeldus, String mast) {
         this.väärtus = väärtus;
