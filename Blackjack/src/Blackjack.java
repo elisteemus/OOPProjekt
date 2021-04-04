@@ -55,7 +55,6 @@ public class Blackjack {
                 pakk.remove(diileriKaart);
             }
 
-
             if (mängija.kas21()) {                   //vaadatakse juba alguses, kas 21 mängijal olemas
                 if (diiler.kas21()) {
                     System.out.println("Sinu kaardid: " + mängija.getKaardid());
